@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+a, a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.logo {
+  position: absolute;
+  top: 8px;
+}
+
+.logIn {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+}
+
+.form-control {
+  display: inline;
+}
+
+.searchForm {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 50%;
+}
+
+.navbar {
+  border: none;
+  background-image: url(./pics/bg.jpg);
+  background-repeat: no-repeat, repeat-x;
+  min-height: 480px;
+}
+
+.followUs {
+  border: none;
+  background-image: url(./pics/bg.jpg);
+  min-height: 265px;
+  background-repeat: no-repeat, repeat-x;
+  background-position: 0% 50%;
+}
+
+.search-button {
+  width: 320px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.modal {
+  position: fixed;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.progress-bar {
+  z-index: 99999;
+  position: absolute;
+  height: 7px;
+  top: 480px;
+}
+
+.body {
+  text-align: center;
+  padding: 15px 30px;
+  font-size: 13px;
+  line-height: 18px;
+}
+
+.bodyImg{
+  height: 100px;
+  width: 100px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.show-grid2{
+  padding-top: 36px;
+}
+
+.footer {
+  background-color: #373a3c;
+  color: white;
+  text-align: center;
+  height: 205px;
+}
+
+.list-group-item {
+  border: none;
+  background-color: transparent;
+  text-align: right;
+  padding: 5px 0px;
+}
+
+.body-title {
+  margin-top: 0px;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.footer-title {
+  text-align: right;
+  font-size: 18px;
+}
+
+.footer-aboutme {
+  text-align: left;
+  font-size: 18px;
+}
+
+.hideThis {
+  text-align: center;
+  margin-top: 18px;
+}
+
+.progress {
+  height: 0px;
+  margin-bottom: 0px;
+}
+
+.nav-title{
+    position: absolute;
+    top: 10%;
+    left: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.navbar-nav>li>a {
+  line-height: 30px;
+}

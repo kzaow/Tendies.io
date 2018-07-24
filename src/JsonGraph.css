@@ -1,0 +1,37 @@
+h3.popover-title{
+  text-align: center;
+}
+
+.popover-stockinfo {
+  max-width: 500px;
+}
+
+canvas {
+  background-color: none;
+}
+
+.nameLogo {
+  font-size: 20px;
+  font-weight: 700;
+  position: absolute;
+  top: 10px;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+.price {
+  font-size: 40px;
+  font-weight: bold;
+  width: 45%;
+  margin-top: 2%;
+
+}
+
+.logoPic {
+  border: none;
+}
+
+.chartSize {
+  width: 944px;
+  height: 302px;
+}

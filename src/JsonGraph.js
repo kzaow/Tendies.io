@@ -199,7 +199,7 @@ class JsonGraph extends Component {
       var IEX = this.parseIEXData(newProps.IEXData, newProps.priceData, newProps.logoData);
 
       // Add .00 to the price if its a whole number
-      if((parseFloat(IEX[9]) % 1) == 0){
+      if((parseFloat(IEX[9]) % 1) === 0){
         IEX[9] = parseFloat(IEX[9]).toFixed(2);
       }
 

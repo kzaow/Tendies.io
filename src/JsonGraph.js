@@ -197,6 +197,12 @@ class JsonGraph extends Component {
 
     if (this.props.IEXData !== newProps.IEXData) {
       var IEX = this.parseIEXData(newProps.IEXData, newProps.priceData, newProps.logoData);
+
+      // Add .00 to the price if its a whole number
+      if((parseFloat(IEX[9]) % 1) == 0){
+        IEX[9] = parseFloat(IEX[9]).toFixed(2);
+      }
+
       this.setState({
         symbol: IEX[0],
         companyName: IEX[1],
@@ -235,14 +241,6 @@ class JsonGraph extends Component {
           <span style={{fontSize: "12px", fontWeight: "400"}}>{this.state.showChart ? " As of " + this.state.date : null}</span>
         </div>
         </div>
-
-      { /** {this.state.showChart ? <OverlayTrigger
-          trigger={['click']}
-          placement="bottom"
-          overlay={popoverInfo}
-          >
-            <Button style={{fontSize: "25px"}}>{this.state.symbol}</Button>
-          </OverlayTrigger> : null}**/}
 
           <Grid container-fluid="true">
           <Row>

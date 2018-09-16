@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./Navbar.css";
-import { Redirect } from "react-router-dom";
 import moneyIcon from "./pics/money.png";
 import csIcon from "./pics/cs.svg";
 import timeIcon from "./pics/time.png";
@@ -8,22 +7,19 @@ import newsIcon from "./pics/news.svg";
 import presentationIcon from "./pics/presentation.svg";
 import stockIcon from "./pics/stock.png";
 import earningIcon from "./pics/earning.svg";
+import { Redirect } from 'react-router-dom'
 import {
   Form,
   Navbar,
   Button,
-  Nav,
   FormControl,
   FormGroup,
-  NavItem,
   Modal,
   ProgressBar,
   Grid,
   Col,
   Row,
-  Image,
-  ListGroup,
-  ListGroupItem
+  Image
 } from "react-bootstrap";
 
 class NavBar extends Component {
@@ -36,6 +32,7 @@ class NavBar extends Component {
       IEXinfo: [],
       priceOfStock: [],
       logoImage: [],
+      newsOfMarket: [],
       showModal: false,
       isLoading: false,
       redirect: false
@@ -60,14 +57,15 @@ class NavBar extends Component {
       return;
     }
 
-    var i = this.state.userinput.toUpperCase();
-    var AVurl =
+    const i = this.state.userinput.toUpperCase();
+    const AVurl =
       "https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" +
       i +
       "&interval=5min&outputsize=full&apikey=RNLFUDCH5SIH5FZ4";
-    var IEXcompany = "https://api.iextrading.com/1.0/stock/" + i + "/company";
-    var IEXPrice = "https://api.iextrading.com/1.0/stock/" + i + "/price";
-    var IEXLogo = "https://api.iextrading.com/1.0/stock/" + i + "/logo";
+    const IEXcompany = "https://api.iextrading.com/1.0/stock/" + i + "/company";
+    const IEXPrice = "https://api.iextrading.com/1.0/stock/" + i + "/price";
+    const IEXLogo = "https://api.iextrading.com/1.0/stock/" + i + "/logo";
+    const IEXNews = "https://api.iextrading.com/1.0/stock/" + i + "/news/last/5";
     console.log(AVurl);
     console.log(IEXcompany);
 
@@ -76,11 +74,11 @@ class NavBar extends Component {
       isLoading: true
     });
 
-    var avRequest = fetch(AVurl).then(avResults => {
+    const avRequest = fetch(AVurl).then(avResults => {
       return avResults.json();
     });
 
-    var iexRequest = fetch(IEXcompany).then(iexResults => {
+    const iexRequest = fetch(IEXcompany).then(iexResults => {
       console.log(iexResults);
       if (iexResults.status === 404) {
         return;
@@ -89,7 +87,7 @@ class NavBar extends Component {
       }
     });
 
-    var priceIEX = fetch(IEXPrice).then(priceResult => {
+    const priceIEX = fetch(IEXPrice).then(priceResult => {
       if (priceResult.status === 404) {
         return;
       } else {
@@ -97,7 +95,7 @@ class NavBar extends Component {
       }
     });
 
-    var logoIEX = fetch(IEXLogo).then(logoResult => {
+    const logoIEX = fetch(IEXLogo).then(logoResult => {
       if (logoResult.status === 404) {
         return;
       } else {
@@ -105,12 +103,21 @@ class NavBar extends Component {
       }
     });
 
-    Promise.all([avRequest, iexRequest, priceIEX, logoIEX]).then(values => {
+    const newsIEX = fetch(IEXNews).then(newsResult => {
+      if (newsResult.status === 404) {
+        return;
+      } else {
+        return newsResult.json();
+      }
+    });
+
+    Promise.all([avRequest, iexRequest, priceIEX, logoIEX, newsIEX]).then(values => {
       this.setState({
         AVinfo: values[0],
         IEXinfo: values[1],
         priceOfStock: values[2],
-        logoImage: values[3]
+        logoImage: values[3],
+        newsOfMarket: values[4]
       });
 
       if (this.state.AVinfo.hasOwnProperty("Error Message")) {
@@ -127,11 +134,13 @@ class NavBar extends Component {
           isLoading: false,
           redirect: true
         });
+
         this.props.returnJson(
           this.state.AVinfo,
           this.state.IEXinfo,
           this.state.priceOfStock,
-          this.state.logoImage
+          this.state.logoImage,
+          this.state.newsOfMarket
         );
       }
 
@@ -139,6 +148,7 @@ class NavBar extends Component {
       console.log(this.state.IEXinfo);
       console.log(this.state.priceOfStock);
       console.log(this.state.logoImage);
+      console.log(this.state.newsOfMarket);
     });
   }
 
@@ -152,14 +162,15 @@ class NavBar extends Component {
     this.setState({ showModal: true });
   }
 
+
+
   render() {
     const modalStyle = {
       textAlign: "center"
     };
 
-
     return (
-      <div>
+      <React.Fragment>
           <Navbar fluid className="navbar">
             <Navbar.Header>
               <Navbar.Brand>
@@ -173,14 +184,8 @@ class NavBar extends Component {
               </Navbar.Brand>
             </Navbar.Header>
 
-            <Nav className="logIn">
-              <NavItem eventKey={2} href="/">
-                <Button style={{borderRadius:'2px', fontSize: '12px'}} bsStyle="primary">Log In</Button>
-              </NavItem>
-            </Nav>
-
-            <h1 className="nav-title" style={{color: 'white'}}>Tendies finds everything for you:</h1>
-
+            <h1 className="nav-title" style={{color: 'white', fontWeight: 'bolder', fontSize: '64px'}}>Welcome to Tendies</h1>
+            <h2 className="nav-title-2" style={{color: 'white', fontWeight: 'lighter', fontSize: '28px'}}>Designed to make stocks a little easier <br/> to understand</h2>
 
             <Navbar.Form className="searchForm">
               <Form>
@@ -225,10 +230,10 @@ class NavBar extends Component {
             <Modal.Body>
               <p style={modalStyle}>{"Please input a correct ticker"}</p>
             </Modal.Body>
-          </Modal> 
+          </Modal>
 
         {this.state.redirect ? (
-          <Redirect to='/graphs' />
+          <Redirect push to={`/${this.state.userinput}`}/>
         ) : null}
 
         <div>
@@ -276,36 +281,19 @@ class NavBar extends Component {
 
       </div>
 
-      <div className="footer">
+    <div className="footer">
     <Grid>
     <Row>
-    <Col md={6} mdPush={6}>
-    <h5 className="footer-aboutme">Contact Me</h5>
-      <p style={{textAlign: 'left'}}>Kevin Zhou</p>
-      <p style={{textAlign: 'left'}}>917-881-8428</p>
+    <Col md={12} mdPush={12}>
+      <p style={{textAlign: 'center'}}>Kevin Zhou</p>
   </Col>
-  <Col md={6} mdPull={6}>
-  <h5 className="footer-title">About Tendies</h5>
-  <ListGroup>
-    <ListGroupItem>
-      <a href="/">About</a>
-    </ListGroupItem>
-    <ListGroupItem>
-      <a href="/">FAQ</a>
-    </ListGroupItem>
-    <ListGroupItem>
-      <a href="/">Terms & Privacy</a>
-    </ListGroupItem>
-  </ListGroup>
-</Col>
+
     </Row>
     </Grid>
     <p style={{textAlign: 'center'}}>Tendies © 2018</p>
-    <div className="hideThis">Icons made by <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC 3.0 BY</a></div>
-
   </div>
 
-      </div>
+      </React.Fragment>
     );
   }
 }

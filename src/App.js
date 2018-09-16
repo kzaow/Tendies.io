@@ -10,23 +10,23 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      showImage: true,
       jsonFromAV: [],
       jsonFromIEX: [],
       price: [],
-      logo: []
+      logo: [],
+      news: [],
     }
 
     this.getJson = this.getJson.bind(this);
   }
 
-  getJson(dataFromAV, dataFromIEX, tickerPrice, logoPic){
+  getJson(dataFromAV, dataFromIEX, tickerPrice, logoPic, newsFromIEX){
     this.setState({
       jsonFromAV: dataFromAV,
       jsonFromIEX: dataFromIEX,
       price: tickerPrice,
       logo: logoPic,
-      showImage: false
+      news: newsFromIEX
     });
   }
 
@@ -38,8 +38,9 @@ class App extends Component {
               <Route exact path="/" render={() => (
                   <NavBar returnJson={this.getJson}/>
               )}/>
-            <Route exact path="/graphs" render={() => (
-                  <JsonGraph AVData={this.state.jsonFromAV} IEXData={this.state.jsonFromIEX} priceData={this.state.price} logoData={this.state.logo} />
+
+              <Route exact path='/:ticker' render={() =>(
+                  <JsonGraph AVData={this.state.jsonFromAV} IEXData={this.state.jsonFromIEX} priceData={this.state.price} logoData={this.state.logo} newsData={this.state.news}  />
               )}/>
             </Switch>
           </div>
